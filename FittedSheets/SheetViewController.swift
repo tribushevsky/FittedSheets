@@ -576,8 +576,6 @@ public class SheetViewController: UIViewController {
     public func attemptDismiss(animated: Bool) {
         if self.shouldDismiss?(self) != false {
             if self.options.useInlineMode {
-                parent?.navigationController?.navigationBar.alpha = 1.0
-                parent?.navigationController?.navigationBar.isUserInteractionEnabled = true
                 if animated {
                     updateNavigationBar(isHidden: false, timeInterval: 0.3)
                     self.animateOut {
