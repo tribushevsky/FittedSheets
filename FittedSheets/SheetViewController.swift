@@ -576,11 +576,15 @@ public class SheetViewController: UIViewController {
     public func attemptDismiss(animated: Bool) {
         if self.shouldDismiss?(self) != false {
             if self.options.useInlineMode {
+                parent?.navigationController?.navigationBar.alpha = 1.0
+                parent?.navigationController?.navigationBar.isUserInteractionEnabled = true
                 if animated {
+                    updateNavigationBar(isHidden: false, timeInterval: 0.3)
                     self.animateOut {
                         self.didDismiss?(self)
                     }
                 } else {
+                    updateNavigationBar(isHidden: false, timeInterval: nil)
                     self.view.removeFromSuperview()
                     self.removeFromParent()
                     self.didDismiss?(self)
@@ -599,7 +603,7 @@ public class SheetViewController: UIViewController {
     }
     
     /// Animates the sheet in, but only if presenting using the inline mode
-    public func animateIn(to view: UIView, in parent: UIViewController, size: SheetSize? = nil, duration: TimeInterval = 0.3, completion: (() -> Void)? = nil) {
+    public func animateIn(to view: UIView, in parent: UIViewController, size: SheetSize? = nil, hideNavigationBar: Bool = true, duration: TimeInterval = 0.3, completion: (() -> Void)? = nil) {
         
         self.willMove(toParent: parent)
         parent.addChild(self)
@@ -613,7 +617,12 @@ public class SheetViewController: UIViewController {
             self.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             self.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        
         self.animateIn(size: size, duration: duration, completion: completion)
+        
+        guard hideNavigationBar, options.useInlineMode else { return }
+        
+        updateNavigationBar(isHidden: true, timeInterval: duration)
     }
     
     public func animateIn(size: SheetSize? = nil, duration: TimeInterval = 0.3, completion: (() -> Void)? = nil) {
@@ -663,6 +672,11 @@ public class SheetViewController: UIViewController {
                 completion?()
             }
         )
+    }
+    
+    private func updateNavigationBar(isHidden: Bool, timeInterval: TimeInterval?) {
+        parent?.navigationController?.navigationBar.alpha = isHidden ? 0.00001 : 1.0
+        parent?.navigationController?.navigationBar.isUserInteractionEnabled = isHidden ? false : true
     }
 }
 
@@ -757,3 +771,4 @@ extension SheetViewController: UIViewControllerTransitioningDelegate {
 }
 
 #endif // os(iOS) || os(tvOS) || os(watchOS)
+

@@ -44,7 +44,7 @@ class NavigationDemo: UIViewController, Demoable {
         addSheetEventLogging(to: sheet)
         
         if let view = view {
-            sheet.animateIn(to: view, in: parent)
+            sheet.animateIn(to: view, in: parent, hideNavigationBar: false)
         } else {
             parent.present(sheet, animated: true, completion: nil)
         }
