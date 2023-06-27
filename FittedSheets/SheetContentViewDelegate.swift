@@ -10,7 +10,7 @@
 import UIKit
 
 protocol SheetContentViewDelegate: class {
-    func preferredHeightChanged(oldHeight: CGFloat, newSize: CGFloat)
+	func preferredHeightChanged(oldHeight: CGFloat, newSize: CGFloat, animated: Bool)
     func pullBarTapped()
 }
 

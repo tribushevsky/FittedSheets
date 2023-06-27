@@ -162,7 +162,7 @@ public class SheetContentViewController: UIViewController {
         self.contentTopConstraint?.isActive = true
     }
     
-    func updatePreferredHeight() {
+    func updatePreferredHeight(animated: Bool = true) {
         self.updateNavigationControllerHeight()
         let width = self.view.bounds.width > 0 ? self.view.bounds.width : UIScreen.main.bounds.width
         let oldPreferredHeight = self.preferredHeight
@@ -180,7 +180,11 @@ public class SheetContentViewController: UIViewController {
             self.contentView.layoutSubviews()
         }
         
-        self.delegate?.preferredHeightChanged(oldHeight: oldPreferredHeight, newSize: self.preferredHeight)
+		self.delegate?.preferredHeightChanged(
+			oldHeight: oldPreferredHeight,
+			newSize: self.preferredHeight,
+			animated: animated
+		)
     }
     
     private func updateChildViewControllerBottomConstraint(adjustment: CGFloat) {

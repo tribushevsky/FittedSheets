@@ -233,6 +233,10 @@ public class SheetViewController: UIViewController {
         }
     }
     
+	public func forceResize(animated: Bool) {
+		contentViewController.updatePreferredHeight(animated: animated)
+	}
+
     /// Handle a scroll view in the child view controller by watching for the offset for the scrollview and taking priority when at the top (so pulling up/down can grow/shrink the sheet instead of bouncing the child's scroll view)
     public func handleScrollView(_ scrollView: UIScrollView) {
         scrollView.panGestureRecognizer.require(toFail: panGestureRecognizer)
@@ -745,13 +749,13 @@ extension SheetViewController: SheetContentViewDelegate {
         }
     }
     
-    func preferredHeightChanged(oldHeight: CGFloat, newSize: CGFloat) {
+	func preferredHeightChanged(oldHeight: CGFloat, newSize: CGFloat, animated: Bool) {
         if self.sizes.contains(.intrinsic) {
             self.updateOrderedSizes()
         }
         // If our intrinsic size changed and that is what we are sized to currently, use that
         if self.currentSize == .intrinsic, !self.isPanning {
-            self.resize(to: .intrinsic)
+            self.resize(to: .intrinsic, animated: animated)
         }
     }
 }
